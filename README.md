@@ -10,7 +10,17 @@ function Example() {
 
   return (
     <>
-      <button onClick={(e) => overlay.open(e)}>Open</button>
+      <button
+        onClick={async (e) => {
+          const isConfirmed = await overlay.open(e)
+
+          if (isConfirmed) {
+            alert('confirmed!')
+          }
+        }}
+      >
+        Open
+      </button>
       <Modal
         isOpen={overlay.isOpen}
         onConfirm={() => overlay.resolve(true)}
