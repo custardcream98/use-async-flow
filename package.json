@@ -2,7 +2,7 @@
   "name": "use-async-overlay:root",
   "private": true,
   "version": "1.0.0",
-  "description": "Monorepo for use-async-array, eslint-config, and docs",
+  "description": "Monorepo for use-async-overlay",
   "scripts": {
     "build": "pnpm -r --filter ./packages/* --filter ./apps/* build",
     "dev": "pnpm -r --parallel --filter ./packages/use-async-overlay --filter ./apps/docs dev",
