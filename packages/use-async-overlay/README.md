@@ -12,9 +12,9 @@ function Example() {
     <>
       <button
         onClick={async (e) => {
-          const isConfirmed = await overlay.open(e)
+          const result = await overlay.open(e)
 
-          if (isConfirmed) {
+          if (result.status === 'resolved' && result.value === true) {
             alert('confirmed!')
           }
         }}
