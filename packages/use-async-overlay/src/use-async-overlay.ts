@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 export type OverlayResolved<ResolvedValue> = {
   status: 'resolved'
-  value?: ResolvedValue
+  value: ResolvedValue
 }
 export type OverlayDismissed<DismissedReason> = { status: 'dismissed'; reason?: DismissedReason }
 export type OverlayOutcome<ResolvedValue, DismissedReason> =
@@ -66,7 +66,7 @@ export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unkno
   useEffect(() => {
     return () => {
       if (dismissOnUnmount && resolverRef.current && !settledRef.current) {
-        resolverRef.current({ status: 'dismissed' })
+        resolverRef.current({ status: 'dismissed', reason: 'unmount' as DismissedReason })
         settledRef.current = true
       }
     }
@@ -107,11 +107,11 @@ export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unkno
     [restoreFocusIfNeeded]
   )
 
-  const resolve = useCallback((value?: ResolvedValue) => {
+  const resolve = useCallback((value: ResolvedValue) => {
     resolverRef.current?.({ status: 'resolved', value })
   }, [])
 
-  const dismiss = useCallback((reason?: DismissedReason) => {
+  const dismiss = useCallback((reason: DismissedReason) => {
     resolverRef.current?.({ status: 'dismissed', reason })
   }, [])
 

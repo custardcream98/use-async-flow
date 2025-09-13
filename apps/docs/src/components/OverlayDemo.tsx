@@ -17,7 +17,7 @@ function Modal({
 }: {
   isOpen: boolean
   onResolve: (value: boolean) => void
-  onDismiss: (reason?: string) => void
+  onDismiss: (reason: string) => void
   title?: string
 }) {
   const [mounted, setMounted] = useState(false)
