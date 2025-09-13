@@ -8,7 +8,7 @@ import './globals.css'
 
 export const metadata = {
   title: 'use-async-overlay',
-  description: 'Promise-based overlay control hook for React',
+  description: '선언적으로 오버레이를 그리고, 명령형으로 컨트롤하세요.',
 }
 
 const navbar = <Navbar logo={<b>use-async-overlay</b>} />

@@ -1,14 +1,6 @@
 # use-async-overlay
 
-Promise-based overlay control hook for React.
-
-## Install
-
-```bash
-npm install use-async-overlay
-```
-
-## Quick Start
+> 선언적으로 오버레이를 그리고, 명령형으로 컨트롤하세요.
 
 ```tsx
 import { useAsyncOverlay } from 'use-async-overlay'
@@ -30,17 +22,4 @@ function Example() {
 }
 ```
 
-## Outcome
-
-`open()` returns a Promise of a discriminated union:
-
-```ts
-{ status: 'resolved'; value?: T } | { status: 'dismissed'; reason?: R }
-```
-
-## Options
-
-- restoreFocus (default: 'previous')
-- dismissOnUnmount (default: true)
-
-See full docs and demo in the docs app.
+## 자세한 내용은 문서를 참고해주세요.

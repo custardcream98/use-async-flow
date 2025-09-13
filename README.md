@@ -22,4 +22,10 @@ function Example() {
 }
 ```
 
+## Install
+
+```bash
+npm install use-async-overlay
+```
+
 ## 자세한 내용은 문서를 참고해주세요.
