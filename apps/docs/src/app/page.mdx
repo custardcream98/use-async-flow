@@ -55,6 +55,14 @@ function Example() {
 
           if (result.status === 'resolved' && result.value === true) {
             alert('confirmed!')
+          } else if (result.status === 'resolved' && result.value === false) {
+            alert('rejected!')
+          } else if (result.status === 'dismissed' && result.reason === 'esc') {
+            alert('esc pressed!')
+          } else if (result.status === 'dismissed' && result.reason === 'backdrop') {
+            alert('backdrop clicked!')
+          } else if (result.status === 'dismissed' && result.reason === 'unmount') {
+            alert('unmounted!')
           }
         }}
       >

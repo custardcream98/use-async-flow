@@ -39,6 +39,12 @@ function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unknown>(opt
 - `resolve`: 모달을 확정 (값과 함께)
 - `dismiss`: 모달을 취소 (이유와 함께)
 
+`resolve`를 호출하면, `open()`의 Promise가 `{ status: 'resolved', value: ResolvedValue }`로 resolve됩니다.
+
+`dismiss`를 호출하면, `open()`의 Promise가 `{ status: 'dismissed', reason: DismissedReason }`로 resolve됩니다.
+
+이 두가지를 조합하여 모달이 닫히는 다양한 조건을 체계적으로 처리할 수 있습니다.
+
 ### Focus behavior with open(event)
 
 - **`open()`에 `event` 객체를 전달하면**, 모달이 `resolve` 또는 `dismiss`되는 시점에 `event.currentTarget`으로 포커스를 옮깁니다. 이는 모달이 닫힐 때 모달을 연 버튼(트리거)으로 포커스를 자연스럽게 복귀시키기 위함입니다.
