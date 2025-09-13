@@ -19,7 +19,8 @@
     "build": "tsup src/index.ts --dts --format esm,cjs --clean",
     "dev": "tsup src/index.ts --dts --format esm,cjs --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepublishOnly": "pnpm build"
   },
   "keywords": [
     "react",
@@ -30,6 +31,13 @@
   ],
   "author": "",
   "license": "MIT",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "react": ">=18.3.0 || ^19.0.0"
   },
@@ -37,6 +45,7 @@
     "@types/react": "19.1.13",
     "eslint": "9.35.0",
     "tsup": "8.5.0",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "@use-async-overlay/eslint-config": "workspace:*"
   }
 }

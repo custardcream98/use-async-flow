@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react'
+
 import { Footer, Layout, Navbar } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
-import 'nextra-theme-docs/style.css'
+
+import './globals.css'
 
 export const metadata = {
   title: 'use-async-overlay',
@@ -14,10 +16,18 @@ const footer = <Footer>MIT {new Date().getFullYear()} © use-async-overlay.</Foo
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko" dir="ltr" suppressHydrationWarning>
+    <html dir="ltr" lang="ko" suppressHydrationWarning>
       <Head />
       <body>
-        <Layout navbar={navbar} footer={footer} pageMap={await getPageMap()}>
+        <Layout
+          docsRepositoryBase="https://github.com/custardcream98/use-async-overlay"
+          footer={footer}
+          navbar={navbar}
+          pageMap={await getPageMap()}
+          sidebar={{
+            defaultOpen: false,
+          }}
+        >
           {children}
         </Layout>
       </body>

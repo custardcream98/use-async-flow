@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import reactHooks from 'eslint-plugin-react-hooks'
+import perfectionist from 'eslint-plugin-perfectionist'
 import globals from 'globals'
 
 // Base config: shared rules and ignores
@@ -25,9 +26,29 @@ export const base = [
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      ...tsPlugin.configs['recommended-type-checked'].rules,
+      ...tsPlugin.configs.recommended.rules,
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    },
+  },
+  {
+    plugins: {
+      perfectionist,
+    },
+    rules: {
+      'perfectionist/sort-array-includes': 'error',
+      'perfectionist/sort-exports': 'error',
+      'perfectionist/sort-imports': 'error',
+      'perfectionist/sort-interfaces': 'error',
+      'perfectionist/sort-intersection-types': 'error',
+      'perfectionist/sort-jsx-props': 'error',
+      'perfectionist/sort-named-exports': 'error',
+      'perfectionist/sort-union-types': 'error',
+    },
+    settings: {
+      perfectionist: {
+        type: 'natural',
+      },
     },
   },
 ]

@@ -12,19 +12,25 @@
     "typedoc": "typedoc"
   },
   "dependencies": {
+    "@docsearch/react": "3.9.0",
+    "algoliasearch": "5.37.0",
+    "clsx": "^2.1.1",
     "next": "15.5.3",
     "nextra": "4.4.0",
     "nextra-theme-docs": "4.4.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "@docsearch/react": "3.9.0",
-    "algoliasearch": "5.37.0"
+    "use-async-overlay": "workspace:*"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "24.3.3",
     "@types/react": "19.1.13",
     "@types/react-dom": "19.1.9",
+    "@use-async-overlay/eslint-config": "workspace:*",
     "eslint": "9.35.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13",
     "typedoc": "0.28.12",
     "typedoc-plugin-markdown": "4.8.1"
   }
