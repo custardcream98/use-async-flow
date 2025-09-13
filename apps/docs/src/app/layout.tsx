@@ -21,9 +21,16 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         <Layout
           docsRepositoryBase="https://github.com/custardcream98/use-async-overlay"
+          editLink={false}
+          feedback={{
+            content: 'GitHub',
+            labels: 'GitHub Link',
+            link: 'https://github.com/custardcream98/use-async-overlay',
+          }}
           footer={footer}
           navbar={navbar}
           pageMap={await getPageMap()}
+          search={false}
         >
           {children}
         </Layout>
