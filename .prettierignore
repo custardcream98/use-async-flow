@@ -1,0 +1,9 @@
+node_modules
+.dist
+.next
+dist
+coverage
+content/api
+**/*.d.ts
+**/CHANGELOG.md
+pnpm-lock.yaml

@@ -1,0 +1,28 @@
+{
+  "name": "use-async-overlay:root",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Monorepo for use-async-array, eslint-config, and docs",
+  "scripts": {
+    "build": "pnpm -r --filter ./packages/* --filter ./apps/* build",
+    "dev": "pnpm --filter ./apps/docs dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "changeset": "changeset",
+    "prepare": "husky",
+    "prettier": "prettier .",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.1",
+  "devDependencies": {
+    "@use-async-overlay/eslint-config": "workspace:*",
+    "eslint": "9.35.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
+    "prettier": "^3.6.2"
+  }
+}

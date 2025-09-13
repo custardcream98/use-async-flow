@@ -1,0 +1,10 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["../../packages/use-async-overlay/src/index.ts"],
+  "out": "content/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "hideBreadcrumbs": true,
+  "hideInPageTOC": false,
+  "categorizeByGroup": false
+}

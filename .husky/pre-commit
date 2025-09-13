@@ -1,0 +1,2 @@
+pnpm -r typecheck || exit 1
+pnpm exec lint-staged || exit 1
