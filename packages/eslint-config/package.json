@@ -1,7 +1,7 @@
 {
   "name": "@use-async-overlay/eslint-config",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "type": "module",
   "main": "index.mjs",
   "exports": {
