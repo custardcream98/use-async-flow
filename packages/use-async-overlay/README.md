@@ -11,11 +11,12 @@ function Example() {
   return (
     <>
       <button onClick={(e) => overlay.open(e)}>Open</button>
-      {/* Your modal here */}
       <Modal
         isOpen={overlay.isOpen}
         onConfirm={() => overlay.resolve(true)}
-        onClose={() => overlay.dismiss('esc')}
+        onReject={() => overlay.resolve(false)}
+        onESCPress={() => overlay.dismiss('esc')}
+        onBackdropClick={() => overlay.dismiss('backdrop')}
       />
     </>
   )
