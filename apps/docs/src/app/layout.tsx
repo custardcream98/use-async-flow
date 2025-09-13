@@ -24,9 +24,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           footer={footer}
           navbar={navbar}
           pageMap={await getPageMap()}
-          sidebar={{
-            defaultOpen: false,
-          }}
         >
           {children}
         </Layout>

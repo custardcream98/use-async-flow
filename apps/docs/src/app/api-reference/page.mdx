@@ -1,0 +1,49 @@
+---
+title: API Reference
+---
+
+# API Reference
+
+```ts
+export type OverlayResolved<ResolvedValue> = {
+  status: 'resolved'
+  value?: ResolvedValue
+}
+export type OverlayDismissed<DismissedReason> = { status: 'dismissed'; reason?: DismissedReason }
+export type OverlayOutcome<ResolvedValue, DismissedReason> =
+  | OverlayDismissed<DismissedReason>
+  | OverlayResolved<ResolvedValue>
+
+function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unknown>(options?: {
+  restoreFocus?:
+    | boolean
+    | 'previous'
+    | HTMLElement
+    | (() => HTMLElement | null)
+    | { selector: string }
+  dismissOnUnmount?: boolean
+}): {
+  isOpen: boolean
+  open: (
+    event?: React.MouseEvent<HTMLElement> | React.PointerEvent<HTMLElement>
+  ) => Promise<OverlayOutcome<ResolvedValue, DismissedReason>>
+  resolve: (value?: ResolvedValue) => void
+  dismiss: (reason?: DismissedReason) => void
+}
+```
+
+### Options
+
+- **restoreFocus** (default: `'previous'`)
+  - 모달을 닫을 때 포커스를 어디로 되돌릴지 제어합니다.
+  - `'previous' | HTMLElement | () => HTMLElement | { selector: string }`
+  - 권장값은 `'previous'`: `open(event)` 호출 당시의 버튼 같은 트리거 요소로 자연스럽게 복귀합니다.
+
+- **dismissOnUnmount** (default: `true`)
+  - 컴포넌트가 언마운트되거나 조건부 렌더링으로 모달 루트가 사라질 때, 대기 중인 Promise가 영원히 걸리지 않도록 자동으로 `{ status: 'dismissed', reason: 'unmount' }`로 정리합니다.
+  - 라우트 전환/탭 이동/조건부 분기 해제 같은 상황에서 메모리·로직 누수를 방지합니다.
+
+### Focus behavior with open(event)
+
+- **`open()`에 `event` 객체를 전달하면**, 모달이 `resolve` 또는 `dismiss`되는 시점에 `event.currentTarget`으로 포커스를 옮깁니다. 이는 모달이 닫힐 때 모달을 연 버튼(트리거)으로 포커스를 자연스럽게 복귀시키기 위함입니다.
+- 이 동작은 `restoreFocus` 옵션이 기본값인 `'previous'`일 때 활성화됩니다. 다른 방식으로 포커스를 제어하고 싶다면 `restoreFocus`에 직접 타겟 요소, 셀렉터, 또는 함수를 전달하세요.
