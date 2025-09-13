@@ -2,9 +2,14 @@ import type { MouseEvent, PointerEvent } from 'react'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-export type OverlayResolved<T> = { status: 'resolved'; value?: T }
-export type OverlayDismissed<R = unknown> = { status: 'dismissed'; reason?: R }
-export type OverlayOutcome<T, R = unknown> = OverlayDismissed<R> | OverlayResolved<T>
+export type OverlayResolved<ResolvedValue> = {
+  status: 'resolved'
+  value?: ResolvedValue
+}
+export type OverlayDismissed<DismissedReason> = { status: 'dismissed'; reason?: DismissedReason }
+export type OverlayOutcome<ResolvedValue, DismissedReason> =
+  | OverlayDismissed<DismissedReason>
+  | OverlayResolved<ResolvedValue>
 
 export type UseAsyncOverlayOptions = {
   /**
@@ -19,12 +24,16 @@ export type UseAsyncOverlayOptions = {
   dismissOnUnmount?: boolean
 }
 
-export function useAsyncOverlay<T = unknown, R = unknown>(options: UseAsyncOverlayOptions = {}) {
+export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unknown>(
+  options: UseAsyncOverlayOptions = {}
+) {
   const { restoreFocus = 'previous', dismissOnUnmount = true } = options
 
-  const resolverRef = useRef<((outcome: OverlayOutcome<T, R>) => void) | null>(null)
+  const resolverRef = useRef<
+    ((outcome: OverlayOutcome<ResolvedValue, DismissedReason>) => void) | null
+  >(null)
   const settledRef = useRef(false)
-  const promiseRef = useRef<null | Promise<OverlayOutcome<T, R>>>(null)
+  const promiseRef = useRef<null | Promise<OverlayOutcome<ResolvedValue, DismissedReason>>>(null)
   const triggerElRef = useRef<HTMLElement | null>(null)
 
   const [isOpen, setIsOpen] = useState(false)
@@ -66,7 +75,7 @@ export function useAsyncOverlay<T = unknown, R = unknown>(options: UseAsyncOverl
   const open = useCallback(
     async (
       event?: MouseEvent<HTMLElement> | PointerEvent<HTMLElement>
-    ): Promise<OverlayOutcome<T, R>> => {
+    ): Promise<OverlayOutcome<ResolvedValue, DismissedReason>> => {
       if (promiseRef.current) {
         return promiseRef.current
       }
@@ -75,32 +84,34 @@ export function useAsyncOverlay<T = unknown, R = unknown>(options: UseAsyncOverl
       setIsOpen(true)
       settledRef.current = false
 
-      promiseRef.current = new Promise<OverlayOutcome<T, R>>((resolve) => {
-        resolverRef.current = (outcome) => {
-          if (settledRef.current) {
-            return
+      promiseRef.current = new Promise<OverlayOutcome<ResolvedValue, DismissedReason>>(
+        (resolve) => {
+          resolverRef.current = (outcome) => {
+            if (settledRef.current) {
+              return
+            }
+
+            settledRef.current = true
+            resolve(outcome)
+            setIsOpen(false)
+            restoreFocusIfNeeded()
+
+            resolverRef.current = null
+            promiseRef.current = null
           }
-
-          settledRef.current = true
-          resolve(outcome)
-          setIsOpen(false)
-          restoreFocusIfNeeded()
-
-          resolverRef.current = null
-          promiseRef.current = null
         }
-      })
+      )
 
       return promiseRef.current
     },
     [restoreFocusIfNeeded]
   )
 
-  const resolve = useCallback((value?: T) => {
+  const resolve = useCallback((value?: ResolvedValue) => {
     resolverRef.current?.({ status: 'resolved', value })
   }, [])
 
-  const dismiss = useCallback((reason?: R) => {
+  const dismiss = useCallback((reason?: DismissedReason) => {
     resolverRef.current?.({ status: 'dismissed', reason })
   }, [])
 
