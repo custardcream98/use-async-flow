@@ -6,7 +6,6 @@
   "scripts": {
     "build": "pnpm -r --if-present --filter './packages/*'",
     "build:docs": "pnpm -r --if-present --filter './packages/*' --filter './apps/*' build",
-    "build:docs:vercel": "VERCEL_DEEP_CLONE=true pnpm build:docs",
     "dev": "pnpm -r --parallel --filter './packages/use-async-overlay' --filter './apps/docs' dev",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
