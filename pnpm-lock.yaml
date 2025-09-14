@@ -11,7 +11,7 @@ importers:
       '@changesets/cli':
         specifier: ^2.29.7
         version: 2.29.7(@types/node@24.3.3)
-      '@use-async-overlay/eslint-config':
+      '@use-async-flow/eslint-config':
         specifier: workspace:*
         version: link:packages/eslint-config
       eslint:
@@ -56,7 +56,7 @@ importers:
       react-dom:
         specifier: 19.1.1
         version: 19.1.1(react@19.1.1)
-      use-async-overlay:
+      use-async-flow:
         specifier: workspace:*
         version: link:../../packages/use-async-overlay
     devDependencies:
@@ -72,7 +72,7 @@ importers:
       '@types/react-dom':
         specifier: 19.1.9
         version: 19.1.9(@types/react@19.1.13)
-      '@use-async-overlay/eslint-config':
+      '@use-async-flow/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
       eslint:
@@ -127,7 +127,7 @@ importers:
       '@types/react':
         specifier: 19.1.13
         version: 19.1.13
-      '@use-async-overlay/eslint-config':
+      '@use-async-flow/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       eslint:

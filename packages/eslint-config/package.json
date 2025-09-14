@@ -1,5 +1,5 @@
 {
-  "name": "@use-async-overlay/eslint-config",
+  "name": "@use-async-flow/eslint-config",
   "version": "0.0.0",
   "private": true,
   "type": "module",

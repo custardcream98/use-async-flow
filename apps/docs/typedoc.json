@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["../../packages/use-async-overlay/src/index.ts"],
+  "entryPoints": ["../../packages/use-async-flow/src/index.ts"],
   "out": "content/api",
   "plugin": ["typedoc-plugin-markdown"],
   "readme": "none",

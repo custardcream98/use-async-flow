@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@use-async-overlay/docs"]
+  "ignore": ["@use-async-flow/docs"]
 }

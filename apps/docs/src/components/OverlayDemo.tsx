@@ -2,7 +2,8 @@
 
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
-import { useAsyncOverlay } from 'use-async-overlay'
+
+import { useAsyncFlow } from '../../../../packages/use-async-flow/dist'
 
 type Outcome<T, R> = { status: 'dismissed'; reason?: R } | { status: 'resolved'; value?: T }
 type LabeledOutcome<T, R> = { source: 'modal1' | 'modal2'; outcome: Outcome<T, R> }
@@ -120,8 +121,8 @@ function DemoButton({
 }
 
 export function OverlayDemo() {
-  const overlay1 = useAsyncOverlay<boolean, string>()
-  const overlay2 = useAsyncOverlay<boolean, string>()
+  const overlay1 = useAsyncFlow<boolean, string>()
+  const overlay2 = useAsyncFlow<boolean, string>()
   const [outcomes, setOutcomes] = useState<Array<LabeledOutcome<boolean, string>>>([])
   // Tailwind handles theming via 'dark:' variants
 

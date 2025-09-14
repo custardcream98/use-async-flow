@@ -7,12 +7,12 @@ import { getPageMap } from 'nextra/page-map'
 import './globals.css'
 
 export const metadata = {
-  title: 'use-async-overlay',
+  title: 'use-async-flow',
   description: '선언적으로 오버레이를 그리고, 명령형으로 컨트롤하세요.',
 }
 
-const navbar = <Navbar logo={<b>use-async-overlay</b>} />
-const footer = <Footer>MIT {new Date().getFullYear()} © use-async-overlay.</Footer>
+const navbar = <Navbar logo={<b>use-async-flow</b>} />
+const footer = <Footer>MIT {new Date().getFullYear()} © use-async-flow.</Footer>
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -20,12 +20,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <Head />
       <body>
         <Layout
-          docsRepositoryBase="https://github.com/custardcream98/use-async-overlay"
+          docsRepositoryBase="https://github.com/custardcream98/use-async-flow"
           editLink={false}
           feedback={{
             content: 'GitHub',
             labels: 'GitHub Link',
-            link: 'https://github.com/custardcream98/use-async-overlay',
+            link: 'https://github.com/custardcream98/use-async-flow',
           }}
           footer={footer}
           navbar={navbar}

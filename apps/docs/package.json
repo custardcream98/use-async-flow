@@ -1,5 +1,5 @@
 {
-  "name": "@use-async-overlay/docs",
+  "name": "@use-async-flow/docs",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -20,14 +20,14 @@
     "nextra-theme-docs": "4.4.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "use-async-overlay": "workspace:*"
+    "use-async-flow": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "24.3.3",
     "@types/react": "19.1.13",
     "@types/react-dom": "19.1.9",
-    "@use-async-overlay/eslint-config": "workspace:*",
+    "@use-async-flow/eslint-config": "workspace:*",
     "eslint": "9.35.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13",

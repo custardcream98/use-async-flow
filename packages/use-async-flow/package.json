@@ -1,7 +1,7 @@
 {
-  "name": "use-async-overlay",
+  "name": "use-async-flow",
   "version": "0.3.0",
-  "description": "Promise-based overlay control hook for React",
+  "description": "Promise-based state management hook for React",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -23,11 +23,11 @@
     "prepublishOnly": "pnpm build"
   },
   "bugs": {
-    "url": "https://github.com/custardcream98/use-async-overlay/issues"
+    "url": "https://github.com/custardcream98/use-async-flow/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/custardcream98/use-async-overlay.git"
+    "url": "git+https://github.com/custardcream98/use-async-flow.git"
   },
   "keywords": [
     "react",
@@ -53,6 +53,6 @@
     "eslint": "9.35.0",
     "tsup": "8.5.0",
     "typescript": "5.9.2",
-    "@use-async-overlay/eslint-config": "workspace:*"
+    "@use-async-flow/eslint-config": "workspace:*"
   }
 }

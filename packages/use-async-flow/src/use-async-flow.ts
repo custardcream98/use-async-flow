@@ -16,7 +16,7 @@ export type OverlayOutcome<ResolvedValue, DismissedReason> =
   | OverlayDismissed<DismissedReason>
   | OverlayResolved<ResolvedValue>
 
-export type UseAsyncOverlayOptions = {
+export type useAsyncFlowOptions = {
   /**
    * The element to restore focus to after the `open()` is resolved or dismissed.
    *
@@ -41,8 +41,8 @@ export type UseAsyncOverlayOptions = {
   dismissOnUnmount?: boolean
 }
 
-export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unknown>(
-  options: UseAsyncOverlayOptions = {}
+export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>(
+  options: useAsyncFlowOptions = {}
 ) {
   const {
     restoreFocus = 'previous',

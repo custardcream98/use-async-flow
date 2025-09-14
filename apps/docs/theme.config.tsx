@@ -1,32 +1,28 @@
-import React from "react";
+import React from 'react'
 
 const config = {
-  logo: <span>use-async-overlay</span>,
+  logo: <span>use-async-flow</span>,
   project: {
-    link: "https://github.com/your-org/use-async-overlay",
+    link: 'https://github.com/your-org/use-async-flow',
   },
-  docsRepositoryBase:
-    "https://github.com/your-org/use-async-overlay/tree/main/apps/docs",
+  docsRepositoryBase: 'https://github.com/your-org/use-async-flow/tree/main/apps/docs',
   head: () => (
     <>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta
-        name="description"
-        content="Promise-based overlay control hook for React"
-      />
+      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+      <meta content="Promise-based overlay control hook for React" name="description" />
     </>
   ),
   footer: {
-    text: "use-async-overlay",
+    text: 'use-async-flow',
   },
   search: {
-    provider: "algolia",
+    provider: 'algolia',
     options: {
       appId: process.env.NEXT_PUBLIC_DOCSEARCH_APP_ID,
       apiKey: process.env.NEXT_PUBLIC_DOCSEARCH_API_KEY,
       indexName: process.env.NEXT_PUBLIC_DOCSEARCH_INDEX,
     },
   },
-};
+}
 
-export default config;
+export default config

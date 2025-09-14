@@ -1,4 +1,4 @@
-# use-async-overlay
+# use-async-flow
 
 ## 0.3.0
 

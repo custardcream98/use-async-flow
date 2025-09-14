@@ -7,7 +7,7 @@
 function groupByWorkspace(files) {
   const groups = [
     { root: 'apps/docs', files: [] },
-    { root: 'packages/use-async-overlay', files: [] },
+    { root: 'packages/use-async-flow', files: [] },
   ]
 
   for (const file of files) {

@@ -1,3 +1,3 @@
-import { next as nextConfig } from '@use-async-overlay/eslint-config'
+import { next as nextConfig } from '@use-async-flow/eslint-config'
 
 export default nextConfig
