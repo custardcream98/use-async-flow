@@ -6,7 +6,10 @@ export type OverlayResolved<ResolvedValue> = {
   status: 'resolved'
   value: ResolvedValue
 }
-export type OverlayDismissed<DismissedReason> = { status: 'dismissed'; reason?: DismissedReason }
+export type OverlayDismissed<DismissedReason> = {
+  status: 'dismissed'
+  reason?: 'unmount' | DismissedReason
+}
 export type OverlayOutcome<ResolvedValue, DismissedReason> =
   | OverlayDismissed<DismissedReason>
   | OverlayResolved<ResolvedValue>
@@ -66,7 +69,7 @@ export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unkno
   useEffect(() => {
     return () => {
       if (dismissOnUnmount && resolverRef.current && !settledRef.current) {
-        resolverRef.current({ status: 'dismissed', reason: 'unmount' as DismissedReason })
+        resolverRef.current({ status: 'dismissed', reason: 'unmount' })
         settledRef.current = true
       }
     }
