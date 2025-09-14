@@ -105,45 +105,15 @@ function DemoButton({
   variant?: 'primary' | 'secondary'
   style?: React.CSSProperties
 }) {
-  const base: React.CSSProperties = {
-    padding: '10px 14px',
-    borderRadius: 10,
-    fontWeight: 700,
-    cursor: 'pointer',
-    border: '1px solid transparent',
-    transition: 'transform 120ms ease, filter 120ms ease, box-shadow 120ms ease',
-  }
-  const variants: Record<string, React.CSSProperties> = {
-    primary: {
-      background: '#2563EB',
-      color: 'white',
-      boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
-    },
-    secondary: {
-      background: '#111827',
-      color: 'white',
-      border: '1px solid rgba(255,255,255,0.08)',
-      boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
-    },
-  }
+  const classes = clsx(
+    'rounded-[10px] px-[14px] py-[10px] font-bold cursor-pointer border transition duration-[120ms] ease-out',
+    'hover:brightness-[1.03] active:translate-y-px active:brightness-[0.98]',
+    variant === 'primary'
+      ? 'bg-blue-600 text-white shadow-[0_8px_24px_rgba(37,99,235,0.35)] border-transparent'
+      : 'bg-gray-900 text-white shadow-[0_8px_24px_rgba(0,0,0,0.25)] border-[rgba(255,255,255,0.08)]'
+  )
   return (
-    <button
-      onClick={onClick}
-      onMouseDown={(e) => (
-        (e.currentTarget.style.transform = 'translateY(1px)'),
-        (e.currentTarget.style.filter = 'brightness(0.98)')
-      )}
-      onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(1.03)')}
-      onMouseLeave={(e) => (
-        (e.currentTarget.style.transform = ''),
-        (e.currentTarget.style.filter = '')
-      )}
-      onMouseUp={(e) => (
-        (e.currentTarget.style.transform = ''),
-        (e.currentTarget.style.filter = '')
-      )}
-      style={{ ...base, ...variants[variant], ...style }}
-    >
+    <button className={classes} onClick={onClick} style={style}>
       {children}
     </button>
   )
