@@ -41,6 +41,26 @@ function Example() {
 }
 ```
 
+### Focus control
+
+```tsx
+// 기본: 트리거 버튼으로 포커스 복귀
+const overlay = useAsyncOverlay()
+
+// 특정 요소로 복귀
+useAsyncOverlay({ restoreFocus: { selector: '#search' } })
+
+// 결과별 제어
+useAsyncOverlay({ restoreFocusOnResolved: true, restoreFocusOnDismissed: false })
+```
+
+### Unmount-safe
+
+```tsx
+// 언마운트 시 자동으로 { status: 'dismissed', reason: 'unmount' }
+const overlay = useAsyncOverlay({ dismissOnUnmount: true })
+```
+
 ## 자세한 내용은 문서를 참고해주세요.
 
 [DOCS](https://use-async-overlay.shiwoo.dev/)
