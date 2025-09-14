@@ -22,6 +22,18 @@ export type UseAsyncOverlayOptions = {
    */
   restoreFocus?: 'previous' | (() => HTMLElement | null) | HTMLElement | { selector: string }
   /**
+   * Whether to restore focus to the element that triggered the `open()` when the `open()` is resolved by `resolve()`.
+   *
+   * @default true
+   */
+  restoreFocusOnResolved?: boolean
+  /**
+   * Whether to restore focus to the element that triggered the `open()` when the `open()` is dismissed by `dismiss()`.
+   *
+   * @default true
+   */
+  restoreFocusOnDismissed?: boolean
+  /**
    * @default true
    */
   dismissOnUnmount?: boolean
@@ -30,7 +42,12 @@ export type UseAsyncOverlayOptions = {
 export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unknown>(
   options: UseAsyncOverlayOptions = {}
 ) {
-  const { restoreFocus = 'previous', dismissOnUnmount = true } = options
+  const {
+    restoreFocus = 'previous',
+    dismissOnUnmount = true,
+    restoreFocusOnResolved = true,
+    restoreFocusOnDismissed = true,
+  } = options
 
   const resolverRef = useRef<
     ((outcome: OverlayOutcome<ResolvedValue, DismissedReason>) => void) | null
@@ -95,10 +112,14 @@ export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unkno
             }
 
             settledRef.current = true
+            const shouldRestoreFocus =
+              outcome.status === 'resolved' ? restoreFocusOnResolved : restoreFocusOnDismissed
+            if (shouldRestoreFocus) {
+              restoreFocusIfNeeded()
+            }
+
             resolve(outcome)
             setIsOpen(false)
-            restoreFocusIfNeeded()
-
             resolverRef.current = null
             promiseRef.current = null
           }
@@ -107,7 +128,7 @@ export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unkno
 
       return promiseRef.current
     },
-    [restoreFocusIfNeeded]
+    [restoreFocusIfNeeded, restoreFocusOnResolved, restoreFocusOnDismissed]
   )
 
   const resolve = useCallback((value: ResolvedValue) => {
