@@ -1,5 +1,11 @@
 # use-async-flow
 
+## 0.3.1
+
+### Patch Changes
+
+- dd4004d: feat: change event type
+
 ## 0.3.0
 
 ### Minor Changes
