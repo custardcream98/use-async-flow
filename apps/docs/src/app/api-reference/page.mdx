@@ -68,6 +68,28 @@ function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>(option
 - **`open()`에 `event` 객체를 전달하면**, 모달이 `resolve` 또는 `dismiss`되는 시점에 `event.currentTarget`으로 포커스를 옮깁니다. 이는 모달이 닫힐 때 모달을 연 버튼(트리거)으로 포커스를 자연스럽게 복귀시키기 위함입니다.
 - 이 동작은 `restoreFocus` 옵션이 기본값인 `'previous'`일 때 활성화됩니다. 다른 방식으로 포커스를 제어하고 싶다면 `restoreFocus`에 직접 타겟 요소, 셀렉터, 또는 함수를 전달하세요.
 
+### Passing events to open()
+
+`open(event)`는 React 이벤트 또는 `{ currentTarget: HTMLElement }` 형태의 객체를 받을 수 있습니다. 내부에서는 `event.currentTarget`만 즉시 읽어 트리거 요소로 저장합니다.
+
+```tsx
+// 1) 일반적인 사용: 원본 이벤트를 그대로 전달
+button.onClick = async (e) => {
+  const r = await overlay.open(e)
+}
+
+// 2) 같은 트리거로 연속 오픈: currentTarget을 먼저 꺼내어 전달
+button.onClick = async (e) => {
+  const target = e.currentTarget as HTMLElement
+  const r1 = await overlay1.open({ currentTarget: target })
+  const r2 = await overlay2.open({ currentTarget: target })
+}
+```
+
+> [!NOTE]
+>
+> React 19에서는 예전의 이벤트 풀링이 제거되어 `e.persist()`는 필요하지도, 의미도 없습니다. 비동기 흐름에서 이벤트 전체를 보관할 필요 없이, `e.currentTarget`만 즉시 꺼내 로컬 변수로 전달하는 방식을 권장합니다.
+
 ### Options
 
 - **restoreFocus** (default: `'previous'`)

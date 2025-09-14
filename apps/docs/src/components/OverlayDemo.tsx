@@ -21,31 +21,25 @@ function Modal({
   onDismiss: (reason: string) => void
   title?: string
 }) {
-  const [mounted, setMounted] = useState(false)
   const [show, setShow] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
-      setMounted(true)
-      // next frame to enable transition
-      const id = requestAnimationFrame(() => setShow(true))
-      return () => cancelAnimationFrame(id)
+      setShow(true)
+    } else {
+      setTimeout(() => {
+        setShow(false)
+      }, TRANSITION_MS)
     }
-    if (mounted) {
-      setShow(false)
-      const t = setTimeout(() => setMounted(false), TRANSITION_MS)
-      return () => clearTimeout(t)
-    }
-  }, [isOpen, mounted])
+  }, [isOpen])
 
-  if (!mounted) return null
+  if (!isOpen && !show) return null
 
   return (
     <div
-      aria-hidden
       className={clsx(
         'fixed inset-0 z-40 grid place-items-center bg-black/45 transition-opacity',
-        show ? 'opacity-100' : 'opacity-0'
+        show && isOpen ? 'opacity-100' : 'opacity-0'
       )}
       onClick={() => onDismiss('backdrop')}
     >
@@ -54,7 +48,9 @@ function Modal({
         className={clsx(
           'min-w-[300px] max-w-[480px] rounded-xl bg-white p-4 text-black shadow-2xl transition',
           'dark:bg-neutral-900 dark:text-white',
-          show ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-1.5 scale-95 opacity-95'
+          show && isOpen
+            ? 'translate-y-0 scale-100 opacity-100'
+            : 'translate-y-1.5 scale-95 opacity-95'
         )}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -71,6 +67,11 @@ function Modal({
           <button
             className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white shadow hover:brightness-105"
             onClick={() => onResolve(true)}
+            ref={(el) => {
+              if (el && isOpen) {
+                el.focus()
+              }
+            }}
           >
             확인
           </button>
@@ -121,7 +122,9 @@ function DemoButton({
 }
 
 export function OverlayDemo() {
-  const overlay1 = useAsyncFlow<boolean, string>()
+  const overlay1 = useAsyncFlow<boolean, string>({
+    restoreFocusOnResolved: false,
+  })
   const overlay2 = useAsyncFlow<boolean, string>()
   const [outcomes, setOutcomes] = useState<Array<LabeledOutcome<boolean, string>>>([])
   // Tailwind handles theming via 'dark:' variants
@@ -156,9 +159,19 @@ export function OverlayDemo() {
           <div className="flex flex-wrap gap-2">
             <DemoButton
               onClick={async (e) => {
+                const target = e.currentTarget
+
                 setOutcomes([])
                 const r1 = await overlay1.open(e)
-                const r2 = await overlay2.open(e)
+
+                setOutcomes([{ source: 'modal1', outcome: r1 }])
+
+                if (r1.status !== 'resolved') {
+                  return
+                }
+
+                const r2 = await overlay2.open({ currentTarget: target })
+
                 setOutcomes([
                   { source: 'modal1', outcome: r1 },
                   { source: 'modal2', outcome: r2 },
@@ -167,28 +180,6 @@ export function OverlayDemo() {
               variant="primary"
             >
               모달 2개 순차 실행
-            </DemoButton>
-            <DemoButton
-              onClick={async (e) => {
-                setOutcomes([])
-                const r = await overlay1.open(e)
-                setOutcomes([{ source: 'modal1', outcome: r }])
-              }}
-              style={{ padding: '8px 12px' }}
-              variant="secondary"
-            >
-              모달 1 실행
-            </DemoButton>
-            <DemoButton
-              onClick={async (e) => {
-                setOutcomes([])
-                const r = await overlay2.open(e)
-                setOutcomes([{ source: 'modal2', outcome: r }])
-              }}
-              style={{ padding: '8px 12px' }}
-              variant="secondary"
-            >
-              모달 2 실행
             </DemoButton>
           </div>
 

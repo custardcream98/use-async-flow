@@ -1,5 +1,3 @@
-import type { MouseEvent, PointerEvent } from 'react'
-
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { usePreservedValue } from '@/use-preserved-value'
@@ -101,14 +99,15 @@ export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>
   }, [dismissOnUnmount])
 
   const open = useCallback(
-    async (
-      event?: MouseEvent<HTMLElement> | PointerEvent<HTMLElement>
-    ): Promise<OverlayOutcome<ResolvedValue, DismissedReason>> => {
+    async (event?: {
+      currentTarget: EventTarget
+    }): Promise<OverlayOutcome<ResolvedValue, DismissedReason>> => {
       if (promiseRef.current) {
         return promiseRef.current
       }
 
-      triggerElRef.current = event?.currentTarget ?? null
+      const ct = event?.currentTarget
+      triggerElRef.current = ct instanceof HTMLElement ? ct : null
       setIsOpen(true)
       settledRef.current = false
 
