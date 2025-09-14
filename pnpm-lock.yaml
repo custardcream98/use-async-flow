@@ -58,7 +58,7 @@ importers:
         version: 19.1.1(react@19.1.1)
       use-async-flow:
         specifier: workspace:*
-        version: link:../../packages/use-async-overlay
+        version: link:../../packages/use-async-flow
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.13
@@ -118,7 +118,7 @@ importers:
         specifier: '>=5.6.0'
         version: 5.9.2
 
-  packages/use-async-overlay:
+  packages/use-async-flow:
     dependencies:
       react:
         specifier: '>=18.3.0 || ^19.0.0'
