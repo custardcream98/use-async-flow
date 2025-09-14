@@ -2,6 +2,8 @@ import type { MouseEvent, PointerEvent } from 'react'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { usePreservedValue } from '@/use-preserved-value'
+
 export type OverlayResolved<ResolvedValue> = {
   status: 'resolved'
   value: ResolvedValue
@@ -49,6 +51,8 @@ export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unkno
     restoreFocusOnDismissed = true,
   } = options
 
+  const preservedRestoreFocus = usePreservedValue(restoreFocus)
+
   const resolverRef = useRef<
     ((outcome: OverlayOutcome<ResolvedValue, DismissedReason>) => void) | null
   >(null)
@@ -59,29 +63,33 @@ export function useAsyncOverlay<ResolvedValue = unknown, DismissedReason = unkno
   const [isOpen, setIsOpen] = useState(false)
 
   const restoreFocusIfNeeded = useCallback(() => {
-    if (!restoreFocus) {
+    if (!preservedRestoreFocus) {
       return
     }
 
     let target: HTMLElement | null = null
 
-    if (restoreFocus === 'previous') {
+    if (preservedRestoreFocus === 'previous') {
       target = triggerElRef.current
-    } else if (typeof restoreFocus === 'function') {
-      target = restoreFocus()
-    } else if (restoreFocus && typeof restoreFocus === 'object' && 'selector' in restoreFocus) {
-      const sel = (restoreFocus as { selector: string }).selector
+    } else if (typeof preservedRestoreFocus === 'function') {
+      target = preservedRestoreFocus()
+    } else if (
+      preservedRestoreFocus &&
+      typeof preservedRestoreFocus === 'object' &&
+      'selector' in preservedRestoreFocus
+    ) {
+      const sel = (preservedRestoreFocus as { selector: string }).selector
       const el = document.querySelector(sel)
 
       if (el instanceof HTMLElement) {
         target = el
       }
-    } else if (restoreFocus instanceof HTMLElement) {
-      target = restoreFocus
+    } else if (preservedRestoreFocus instanceof HTMLElement) {
+      target = preservedRestoreFocus
     }
 
     target?.focus?.()
-  }, [restoreFocus])
+  }, [preservedRestoreFocus])
 
   useEffect(() => {
     return () => {
