@@ -1,5 +1,11 @@
 # use-async-flow
 
+## 0.4.0
+
+### Minor Changes
+
+- fb36b9e: feat: enhance `open()` with RestoreFocusOptions
+
 ## 0.3.1
 
 ### Patch Changes
