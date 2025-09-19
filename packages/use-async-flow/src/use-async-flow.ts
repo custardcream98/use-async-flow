@@ -14,13 +14,17 @@ export type OverlayOutcome<ResolvedValue, DismissedReason> =
   | OverlayDismissed<DismissedReason>
   | OverlayResolved<ResolvedValue>
 
-export type useAsyncFlowOptions = {
+type RestoreFocusObjectType = {
+  selector: string
+}
+
+export type RestoreFocusOptions = {
   /**
    * The element to restore focus to after the `open()` is resolved or dismissed.
    *
    * @default 'previous'
    */
-  restoreFocus?: 'previous' | (() => HTMLElement | null) | HTMLElement | { selector: string }
+  restoreFocus?: 'previous' | (() => HTMLElement | null) | HTMLElement | RestoreFocusObjectType
   /**
    * Whether to restore focus to the element that triggered the `open()` when the `open()` is resolved by `resolve()`.
    *
@@ -33,15 +37,16 @@ export type useAsyncFlowOptions = {
    * @default true
    */
   restoreFocusOnDismissed?: boolean
+}
+
+export type useAsyncFlowOptions = RestoreFocusOptions & {
   /**
    * @default true
    */
   dismissOnUnmount?: boolean
 }
 
-export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>(
-  options: useAsyncFlowOptions = {}
-) {
+export function useAsyncFlow<ResolvedValue, DismissedReason>(options: useAsyncFlowOptions = {}) {
   const {
     restoreFocus = 'previous',
     dismissOnUnmount = true,
@@ -60,35 +65,6 @@ export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const restoreFocusIfNeeded = useCallback(() => {
-    if (!preservedRestoreFocus) {
-      return
-    }
-
-    let target: HTMLElement | null = null
-
-    if (preservedRestoreFocus === 'previous') {
-      target = triggerElRef.current
-    } else if (typeof preservedRestoreFocus === 'function') {
-      target = preservedRestoreFocus()
-    } else if (
-      preservedRestoreFocus &&
-      typeof preservedRestoreFocus === 'object' &&
-      'selector' in preservedRestoreFocus
-    ) {
-      const sel = (preservedRestoreFocus as { selector: string }).selector
-      const el = document.querySelector(sel)
-
-      if (el instanceof HTMLElement) {
-        target = el
-      }
-    } else if (preservedRestoreFocus instanceof HTMLElement) {
-      target = preservedRestoreFocus
-    }
-
-    target?.focus?.()
-  }, [preservedRestoreFocus])
-
   useEffect(() => {
     return () => {
       if (dismissOnUnmount && resolverRef.current && !settledRef.current) {
@@ -99,9 +75,12 @@ export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>
   }, [dismissOnUnmount])
 
   const open = useCallback(
-    async (event?: {
-      currentTarget: EventTarget
-    }): Promise<OverlayOutcome<ResolvedValue, DismissedReason>> => {
+    async (
+      event?: {
+        currentTarget: EventTarget
+      },
+      options?: RestoreFocusOptions
+    ): Promise<OverlayOutcome<ResolvedValue, DismissedReason>> => {
       if (promiseRef.current) {
         return promiseRef.current
       }
@@ -120,9 +99,18 @@ export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>
 
             settledRef.current = true
             const shouldRestoreFocus =
-              outcome.status === 'resolved' ? restoreFocusOnResolved : restoreFocusOnDismissed
+              outcome.status === 'resolved'
+                ? (options?.restoreFocusOnResolved ?? restoreFocusOnResolved)
+                : (options?.restoreFocusOnDismissed ?? restoreFocusOnDismissed)
             if (shouldRestoreFocus) {
-              restoreFocusIfNeeded()
+              const resolvedRestoreFocus = options?.restoreFocus ?? preservedRestoreFocus
+
+              const target = getRestoreFocusTarget({
+                restoreFocus: resolvedRestoreFocus,
+                triggerElement: triggerElRef.current,
+              })
+
+              target?.focus?.()
             }
 
             resolve(outcome)
@@ -135,7 +123,7 @@ export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>
 
       return promiseRef.current
     },
-    [restoreFocusIfNeeded, restoreFocusOnResolved, restoreFocusOnDismissed]
+    [restoreFocusOnResolved, restoreFocusOnDismissed, preservedRestoreFocus]
   )
 
   const resolve = useCallback((value: ResolvedValue) => {
@@ -147,4 +135,29 @@ export function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>
   }, [])
 
   return { open, resolve, dismiss, isOpen }
+}
+
+const isRestoreFocusObjectType = (
+  restoreFocus: RestoreFocusOptions['restoreFocus']
+): restoreFocus is RestoreFocusObjectType => {
+  return typeof restoreFocus === 'object' && 'selector' in restoreFocus
+}
+
+const getRestoreFocusTarget = ({
+  restoreFocus,
+  triggerElement,
+}: {
+  restoreFocus: RestoreFocusOptions['restoreFocus']
+  triggerElement: HTMLElement | null
+}): HTMLElement | null => {
+  if (restoreFocus === 'previous') {
+    return triggerElement
+  } else if (typeof restoreFocus === 'function') {
+    return restoreFocus()
+  } else if (isRestoreFocusObjectType(restoreFocus)) {
+    return document.querySelector(restoreFocus.selector)
+  } else if (restoreFocus instanceof HTMLElement) {
+    return restoreFocus
+  }
+  return null
 }

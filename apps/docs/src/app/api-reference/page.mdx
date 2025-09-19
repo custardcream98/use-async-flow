@@ -43,7 +43,12 @@ function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>(option
 }): {
   isOpen: boolean
   open: (
-    event?: React.MouseEvent<HTMLElement> | React.PointerEvent<HTMLElement>
+    event?: { currentTarget: EventTarget },
+    options?: {
+      restoreFocus?: 'previous' | (() => HTMLElement | null) | HTMLElement | { selector: string }
+      restoreFocusOnResolved?: boolean
+      restoreFocusOnDismissed?: boolean
+    }
   ) => Promise<OverlayOutcome<ResolvedValue, DismissedReason>>
   resolve: (value: ResolvedValue) => void
   dismiss: (reason?: DismissedReason) => void
@@ -63,6 +68,30 @@ function useAsyncFlow<ResolvedValue = unknown, DismissedReason = unknown>(option
 
 이 두가지를 조합하여 모달이 닫히는 다양한 조건을 체계적으로 처리할 수 있습니다.
 
+### open() 함수의 options 파라미터
+
+`open()` 함수의 두 번째 파라미터로 `RestoreFocusOptions`를 전달할 수 있습니다. 이 옵션들은 **해당 호출에만 적용**되며, 훅 레벨에서 설정한 기본 옵션보다 **우선순위가 높습니다**.
+
+```tsx
+const overlay = useAsyncFlow({
+  restoreFocusOnResolved: true, // 훅 레벨 기본값
+  restoreFocusOnDismissed: true,
+})
+
+// 이 호출에서만 dismiss 시 포커스 복구 비활성화
+const result = await overlay.open(event, {
+  restoreFocusOnDismissed: false, // 이 옵션이 훅 레벨 설정을 덮어씀
+})
+```
+
+**사용 가능한 옵션:**
+
+- `restoreFocus`: 포커스를 복구할 대상 요소 지정
+- `restoreFocusOnResolved`: resolve 시 포커스 복구 여부
+- `restoreFocusOnDismissed`: dismiss 시 포커스 복구 여부
+
+이를 통해 각각의 모달 호출마다 서로 다른 포커스 복구 전략을 적용할 수 있습니다.
+
 ### Focus behavior with open(event)
 
 - **`open()`에 `event` 객체를 전달하면**, 모달이 `resolve` 또는 `dismiss`되는 시점에 `event.currentTarget`으로 포커스를 옮깁니다. 이는 모달이 닫힐 때 모달을 연 버튼(트리거)으로 포커스를 자연스럽게 복귀시키기 위함입니다.
@@ -81,7 +110,10 @@ button.onClick = async (e) => {
 // 2) 같은 트리거로 연속 오픈: currentTarget을 먼저 꺼내어 전달
 button.onClick = async (e) => {
   const target = e.currentTarget as HTMLElement
-  const r1 = await overlay1.open({ currentTarget: target })
+  const r1 = await overlay1.open({ currentTarget: target, restoreFocusOnResolved: false })
+  if (r1.status !== 'resolved') {
+    return
+  }
   const r2 = await overlay2.open({ currentTarget: target })
 }
 ```
@@ -153,6 +185,28 @@ const overlay = useAsyncFlow({
 ```tsx
 const overlay = useAsyncFlow({
   restoreFocusOnResolved: false,
+  restoreFocusOnDismissed: false,
+})
+```
+
+### 호출별로 다른 포커스 복구 전략 적용
+
+```tsx
+const overlay = useAsyncFlow({
+  restoreFocusOnResolved: true,
+  restoreFocusOnDismissed: true,
+})
+
+// 일반적인 경우: 기본 설정 사용
+const result1 = await overlay.open(event)
+
+// 특정 호출에서만 포커스 복구 대상 변경
+const result2 = await overlay.open(event, {
+  restoreFocus: { selector: '#custom-target' },
+})
+
+// 특정 호출에서만 dismiss 시 포커스 복구 비활성화
+const result3 = await overlay.open(event, {
   restoreFocusOnDismissed: false,
 })
 ```
