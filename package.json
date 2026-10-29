@@ -21,14 +21,25 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.34.5",
   "devDependencies": {
-    "@changesets/cli": "^2.29.7",
+    "@changesets/cli": "^2.31.1",
     "@use-async-flow/eslint-config": "workspace:*",
     "eslint": "9.35.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
-    "prettier": "^3.6.2",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.6.14"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "pnpm": {
+    "overrides": {
+      "typescript": "5.9.3",
+      "eslint": "9.39.5",
+      "postcss": "^8.5.23",
+      "katex": "^0.18.2"
+    }
   }
 }

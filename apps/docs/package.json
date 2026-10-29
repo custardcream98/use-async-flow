@@ -15,22 +15,22 @@
     "@docsearch/react": "3.9.0",
     "algoliasearch": "5.37.0",
     "clsx": "^2.1.1",
-    "next": "15.5.9",
+    "next": "15.5.28",
     "nextra": "4.4.0",
     "nextra-theme-docs": "4.4.0",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "react": "19.1.10",
+    "react-dom": "19.1.10",
     "use-async-flow": "workspace:*"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.13",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "24.3.3",
     "@types/react": "19.1.13",
     "@types/react-dom": "19.1.9",
     "@use-async-flow/eslint-config": "workspace:*",
     "eslint": "9.35.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.13",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.3",
     "typedoc": "0.28.12",
     "typedoc-plugin-markdown": "4.8.1"
   }
